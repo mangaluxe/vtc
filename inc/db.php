@@ -9,8 +9,7 @@ try
 }
 catch(Exception $e)
 {
-	echo $e->getMessage();
-	header('Location: https://www.google.fr/search?q='.$e->getMessage());
-	die('Stop'); // Arrête le script si la base de données n'est pas dispo
+    echo 'Erreur de connexion à la base de données.';
+    // echo $e->getMessage(); // Affiche message d'erreur si la connexion échoue
 }
 ?>
