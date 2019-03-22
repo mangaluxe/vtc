@@ -39,7 +39,8 @@ include_once(__DIR__.'/inc/header.php');
         // $query->execute();
         if ($query->execute())
         {
-          // Logger IP de l'effaceur :
+          // ----- Logger IP de l'effaceur : -----
+          
           $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
           $navigateur = $_SERVER["HTTP_USER_AGENT"];
           $file = fopen('ip.log', 'a+'); // Ouvrir le fichier et place le pointeur (le curseur) à la fin
@@ -99,28 +100,14 @@ include_once(__DIR__.'/inc/header.php');
           $immatriculation = $_POST['immatriculation'];
 
           $erreur = "";
+          if (strlen($marque) < 2 or strlen($marque) > 255) $erreur .= '<h2>Marque incorrect !</h2>';  // Concaténation du message d'erreur dans la variable $erreur
+          if (strlen($modele) < 2 or strlen($modele) > 255) $erreur .= '<h2>Modèle incorrect !</h2>';
+          if (strlen($couleur) < 2 or strlen($couleur) > 255) $erreur .= '<h2>Couleur incorrect !</h2>';
+          if ((strlen($immatriculation) < 2) or (strlen($immatriculation) > 99)) $erreur .= '<h2>Immatriculation incorrect !</h2>';
+          if(strlen($erreur) > 0) exit($erreur); // Si la longueur du message d'erreur est > 0, alors on fait exit en affichant le message d'erreur
+          
   
-          if (strlen($marque) < 2 or strlen($marque) > 255) {
-            $erreur .= '<h2>Marque incorrect !</h2>';  // Concaténation du message d'erreur dans la variable $erreur
-          }
-
-          if (strlen($modele) < 2 or strlen($modele) > 255) {
-            $erreur .= '<h2>Modèle incorrect !</h2>';
-          }
-
-          if (strlen($couleur) < 2 or strlen($couleur) > 255) {
-            $erreur .= '<h2>Couleur incorrect !</h2>';
-          }
-
-          if (strlen($immatriculation) < 2 or strlen($immatriculation) > 99) {
-            $erreur .= '<h2>Immatriculation incorrect !</h2>';
-          }
-  
-          if(strlen($erreur) > 0) {
-            exit($erreur); // Si la longueur du message d'erreur est > 0, alors on fait exit en affichant le message d'erreur
-          }
-  
-          // Modif dans la BDD (avec méthode prepare) :
+          // ----- Modif dans la BDD (avec méthode prepare) : -----
           $query = $db->prepare('UPDATE vehicule SET id_vehicule = :id_vehicule, marque = :marque, modele = :modele, couleur = :couleur, immatriculation = :immatriculation WHERE id_vehicule = :id_vehicule');
   
           $query->bindValue(':id_vehicule', $id_vehicule, PDO::PARAM_INT);
