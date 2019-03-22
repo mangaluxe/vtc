@@ -1,0 +1,177 @@
+body {
+  margin:0;
+  font-size:15px; /* Taille par défaut */
+  background-color:#f8f8f8;
+}
+
+nav {
+  display:block;
+}
+
+main {
+  max-width:1280px; /* max-width au lieu de width pour être responsive */
+  margin:0 auto;
+  display:block;
+  padding:12px;
+  font-family: Verdana, sans-serif;
+}
+
+footer {
+  display:block;
+  position: fixed;
+  bottom:0;
+  right:0;
+}
+
+h1 {
+  font:bold 2em "Times New Roman", serif;
+  text-align:center;
+  margin:40px 0;
+}
+
+h2 {
+  font:bold 1.2em Verdana, sans-serif;
+  text-align:center;
+}
+
+p {
+  font:1em Verdana, sans-serif;
+}
+
+.text {
+  font:1em Verdana, sans-serif;
+}
+
+.b {font-weight:bold}
+.u {text-decoration:underline}
+.i {font-style:italic}
+
+a {text-decoration:none}
+a:link {color: #000048;}
+a:visited {color: #000048;}
+a:hover {color: #0000c6;}
+
+.center {
+  text-align:center;
+}
+
+.right {
+  text-align:right;
+}
+
+.margin {
+  margin:70px;
+}
+
+.s-margin {
+  margin:12px;
+}
+
+.limit {
+  max-width:35em;
+  margin:auto;
+}
+
+.separate {
+  height:2px;
+  background-color: #2c2c2c;
+  margin:18px 0 22px;
+}
+
+.navbar {
+  background-color: #2c2c2c;  
+  width: 100%;
+}
+
+.navbar a {
+  display: inline-block;
+  color: #f5f5f5;
+  text-align: center;
+  text-decoration: none;
+  font:1em Verdana, sans-serif;
+  padding: 16px 17px;
+}
+
+.navbar a:hover {
+  background-color: #bebebe;
+  color: black;
+}
+
+.navbar a.active {
+  background-color: #4b4b4b;
+  color: #f5f5f5;
+  padding: 16px 17px;
+}
+
+.navbar .icon {
+  display: none; /* Menu Burger caché en version desktop */
+}
+
+.flex {
+  display: flex; /* Utilisation de flexbox pour aligner ses enfants */
+  flex-wrap: nowrap;
+  margin: auto;
+  text-align: center;
+}
+
+.info {
+  flex:1; /* Meme largeur pour les enfants dans flexbox */
+  padding:10px;
+  margin: auto;
+  text-align: center;
+  white-space:nowrap;  /* Ne pas aller à la ligne */
+  overflow:hidden; /* Cacher si dépassement */
+  text-overflow:ellipsis; /* Le texte qui dépasse est remplacé par ... */
+}
+
+input {
+  width:100%; /* Pour que ça soit responsive */
+  margin:8px 0;
+}
+
+button {
+  cursor:pointer;
+  border-radius:4px;
+  background-color:#fff;
+  border:1px solid #858585;
+  padding:8px 12px;
+  margin:18px 0;
+}
+button:hover {
+	background-color:#f4f4f4;
+}
+
+hr {
+  margin:10px 0;
+  color:rgba(128, 128, 128, 0.226);
+}
+
+
+
+
+/* Pour écran largeur inférieur à 1024px */
+@media screen and (max-width: 1024px)
+{
+  .navbar a:not(:first-child) {
+    display: none; /* Cacher les liens qui ne sont pas en premier */
+  }
+
+  .navbar a.icon {
+    float: right; /* Icone Burger Menu */
+    display: block;
+    padding: 15px 26px;
+  }
+
+  .navbar.responsive .icon {
+    position: absolute;
+    right: 0;
+    top:0;
+  }
+  .navbar.responsive a {
+    display: block;
+    text-align: left;
+  }
+
+
+
+}
