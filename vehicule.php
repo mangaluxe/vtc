@@ -199,7 +199,7 @@ include_once(__DIR__.'/inc/header.php');
                 </div>
 
                 <div class="info">
-                  <a href="?del=yes&id_vehicule='.$result['id_vehicule'].'" onclick="if(window.confirm(\'Voulez-vous vraiment supprimer ?\')) {return true;} else {return false;}">X</a>
+                  <a href="?del=yes&id_vehicule='.$result['id_vehicule'].'" onclick="if(window.confirm(\'Voulez-vous vraiment supprimer ?\')) {return true;} else {return false;}">✖</a>
                 </div>
 
               </div>';
