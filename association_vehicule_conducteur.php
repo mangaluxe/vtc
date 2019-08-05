@@ -169,7 +169,7 @@ include_once(__DIR__.'/inc/header.php');
                 </div>
 
                 <div class="info">
-                  <a href="?del=yes&id_association='.$result['id_association'].'" onclick="if(window.confirm(\'Voulez-vous vraiment supprimer ?\')) {return true;} else {return false;}">X</a>
+                  <a href="?del=yes&id_association='.$result['id_association'].'" onclick="if(window.confirm(\'Voulez-vous vraiment supprimer ?\')) {return true;} else {return false;}">✖</a>
                 </div>
 
               </div>';
@@ -228,11 +228,18 @@ include_once(__DIR__.'/inc/header.php');
         if(strlen($erreur) > 0) exit($erreur);
         
 
-        // Modif (Association) dans la BDD : MARCHE PAS !!!
-        $query = $db->prepare('UPDATE conducteur SET id_conducteur = :id_conducteur, id_vehicule = :id_vehicule WHERE  id_association = :id_association');
+        // ----- Modif (Association) dans la BDD avec requete preparée : MARCHE PAS !!! ----
+        /*
+        $query = $db->prepare('UPDATE `association_vehicule_conducteur` SET `id_conducteur` = :id_conducteur WHERE `association_vehicule_conducteur`.`id_association` = :id_association');
         
-        $query->bindValue(':id_conducteur', $id_conducteur, PDO::PARAM_STR);
-        $query->bindValue(':id_vehicule', $id_vehicule, PDO::PARAM_STR);
+        $query->bindValue(':id_conducteur', $id_conducteur, PDO::PARAM_INT);
+        $query->bindValue(':id_vehicule', $id_vehicule, PDO::PARAM_INT);
+        */
+
+        // ----- Modif (Association) dans la BDD sans requete preparée : MARCHE PAS !!! ----
+        
+        $query = $db->query("INSERT INTO `association_vehicule_conducteur` (`id_association`, `id_vehicule`, `id_conducteur`) VALUES (NULL, '507', '5');");
+
 
         if ($query->execute()) {
 
