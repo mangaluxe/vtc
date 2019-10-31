@@ -133,8 +133,8 @@ include_once(__DIR__.'/inc/header.php');
                                     INNER JOIN conducteur ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur)
                                     INNER JOIN vehicule ON association_vehicule_conducteur.id_vehicule = vehicule.id_vehicule');
 
-
       $results = $query->fetchAll();
+
 
       foreach ($results as $result)
       {
@@ -176,8 +176,11 @@ include_once(__DIR__.'/inc/header.php');
         <label for="id_conducteur">Conducteur :<br>
           <select name="id_conducteur" id="id_conducteur">
             <option value="">Choisir le conducteur</option>
-            <?php          
-            foreach ($results as $result)
+            <?php
+            $query2 = $db->query('SELECT * FROM conducteur ORDER BY id_conducteur ASC');
+            $conducteurs = $query2->fetchAll();
+
+            foreach ($conducteurs as $result)
             {
               echo '<option value="'.$result['id_conducteur'].'">'.$result['id_conducteur'].' - '.$result['prenom'].' '.$result['nom'].'</option>';
             }
@@ -188,8 +191,11 @@ include_once(__DIR__.'/inc/header.php');
         <label for="id_vehicule">Véhicule :<br>
           <select name="id_vehicule" id="id_vehicule">
             <option value="">Choisir le véhicule</option>
-            <?php           
-            foreach ($results as $result)
+            <?php
+            $query3 = $db->query('SELECT * FROM vehicule ORDER BY id_vehicule ASC');
+            $vehicules = $query3->fetchAll();
+
+            foreach ($vehicules as $result)
             {
               echo '<option value="'.$result['id_vehicule'].'">'.$result['id_vehicule'].' - '.$result['marque'].' '.$result['modele'].'</option>';
             }
@@ -216,10 +222,10 @@ include_once(__DIR__.'/inc/header.php');
         $erreur = "";
         if ($id_conducteur == 0) $erreur .= '<h2>Mettez un id_conducteur correct !</h2>';
         if ($id_vehicule == 0) $erreur .= '<h2>Mettez un id_vehicule correct !</h2>';
-        if(strlen($erreur) > 0) exit($erreur);
-        
+        if (strlen($erreur) > 0) exit($erreur);
 
-        // ----- Modif (Association) dans la BDD avec requete preparée : MARCHE PAS !!! ----
+
+        // ----- Modif (Association) dans la BDD avec requete preparée ----
         /*
         $query = $db->prepare('UPDATE `association_vehicule_conducteur` SET `id_conducteur` = :id_conducteur WHERE `association_vehicule_conducteur`.`id_association` = :id_association');
         
@@ -227,19 +233,22 @@ include_once(__DIR__.'/inc/header.php');
         $query->bindValue(':id_vehicule', $id_vehicule, PDO::PARAM_INT);
         */
 
-        // ----- Modif (Association) dans la BDD sans requete preparée : MARCHE PAS !!! ----
-        
+        // ----- Modif (Association) dans la BDD sans requete preparée ----
+
+        // Ajouter association :
         $query = $db->query("INSERT INTO `association_vehicule_conducteur` (`id_vehicule`, `id_conducteur`) VALUES ($id_vehicule, $id_conducteur);");
 
+        // Mettre à jour association :
+        // $query = $db->query("UPDATE `association_vehicule_conducteur` SET `id_conducteur` = `id_conducteur` WHERE `association_vehicule_conducteur`.`id_association` = `id_association`");
 
         if ($query->execute()) {
 
           echo '<h2>Mis à jour !</h2>';
-          echo '<script>
-                setTimeout(function(){
-                  window.location = "association_vehicule_conducteur.php";
-                }, 3000);
-                </script>';
+          // echo '<script>
+          //       setTimeout(function(){
+          //         window.location = "association_vehicule_conducteur.php";
+          //       }, 3000);
+          //       </script>';
 
         }
 
