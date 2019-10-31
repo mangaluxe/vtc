@@ -129,19 +129,10 @@ include_once(__DIR__.'/inc/header.php');
 
       <?php
 
-      // $query = $db->query('SELECT ass.*, con.*
-      // FROM association_vehicule_conducteur ass INNER JOIN conducteur con
-      //   ON ass.id_conducteur = con.id_conducteur'); // Associer seulement 2 tables
-      // $results = $query->fetchAll();
-
       $query = $db->query('SELECT * FROM (association_vehicule_conducteur
                                     INNER JOIN conducteur ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur)
-                                    INNER JOIN vehicule ON association_vehicule_conducteur.id_vehicule = vehicule.id_vehicule'); // Associer 3 tables
+                                    INNER JOIN vehicule ON association_vehicule_conducteur.id_vehicule = vehicule.id_vehicule');
 
-      // Possible d'utilisation d'alias : ass.*, con.*, veh.*
-      // $query = $db->query('SELECT ass.*, con.*, veh.* FROM (association_vehicule_conducteur ass
-      //                                                 INNER JOIN conducteur con ON ass.id_conducteur = con.id_conducteur)
-      //                                                 INNER JOIN vehicule veh ON ass.id_vehicule = veh.id_vehicule'); // Associer 3 tables
 
       $results = $query->fetchAll();
 
@@ -188,7 +179,7 @@ include_once(__DIR__.'/inc/header.php');
             <?php          
             foreach ($results as $result)
             {
-              echo '<option>'.$result['id_conducteur'].' - '.$result['prenom'].' '.$result['nom'].'</option>';
+              echo '<option value="'.$result['id_conducteur'].'">'.$result['id_conducteur'].' - '.$result['prenom'].' '.$result['nom'].'</option>';
             }
             ?>
           </select>
@@ -200,7 +191,7 @@ include_once(__DIR__.'/inc/header.php');
             <?php           
             foreach ($results as $result)
             {
-              echo '<option>'.$result['id_vehicule'].' - '.$result['marque'].' '.$result['modele'].'</option>';
+              echo '<option value="'.$result['id_vehicule'].'">'.$result['id_vehicule'].' - '.$result['marque'].' '.$result['modele'].'</option>';
             }
             ?>
           </select>
@@ -223,8 +214,8 @@ include_once(__DIR__.'/inc/header.php');
         $id_vehicule = $_POST['id_vehicule'];
 
         $erreur = "";
-        if (strlen($id_conducteur) < 2 or strlen($id_conducteur) > 255) $erreur .= '<h2>Mettez un id_conducteur correct !</h2>';
-        if (strlen($id_vehicule) < 2 or strlen($id_vehicule) > 255) $erreur .= '<h2>Mettez un id_vehicule correct !</h2>';
+        if ($id_conducteur == 0) $erreur .= '<h2>Mettez un id_conducteur correct !</h2>';
+        if ($id_vehicule == 0) $erreur .= '<h2>Mettez un id_vehicule correct !</h2>';
         if(strlen($erreur) > 0) exit($erreur);
         
 
@@ -238,7 +229,7 @@ include_once(__DIR__.'/inc/header.php');
 
         // ----- Modif (Association) dans la BDD sans requete preparée : MARCHE PAS !!! ----
         
-        $query = $db->query("INSERT INTO `association_vehicule_conducteur` (`id_association`, `id_vehicule`, `id_conducteur`) VALUES (NULL, '507', '5');");
+        $query = $db->query("INSERT INTO `association_vehicule_conducteur` (`id_vehicule`, `id_conducteur`) VALUES ($id_vehicule, $id_conducteur);");
 
 
         if ($query->execute()) {
