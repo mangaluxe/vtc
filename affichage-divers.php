@@ -228,10 +228,16 @@ include_once(__DIR__.'/inc/header.php');
       <p>Afficher tous les conducteurs (meme ceux qui n'ont pas de correspondance) ainsi que les vehicules :</p>
 
       <?php
-      $query = $db->query('SELECT * FROM (association_vehicule_conducteur 
-      RIGHT OUTER JOIN conducteur ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur)
-      INNER JOIN vehicule ON vehicule.id_vehicule = association_vehicule_conducteur.id_vehicule');
+      // $query = $db->query('SELECT * FROM (association_vehicule_conducteur 
+      // RIGHT OUTER JOIN conducteur ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur)
+      // INNER JOIN vehicule ON vehicule.id_vehicule = association_vehicule_conducteur.id_vehicule');
+
+      // $query = $db->query('SELECT * FROM (association_vehicule_conducteur RIGHT OUTER JOIN conducteur ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur)');
+
+      $query = $db->query('SELECT C.*, V.* from conducteur as c LEFT JOIN association_vehicule_conducteur as A ON A.id_conducteur = c.id_conducteur LEFT JOIN vehicule as V ON V.id_vehicule = A.id_vehicule');
+
       $results = $query->fetchAll();
+      
       echo '<hr>
       <div class="flex">
 
@@ -250,9 +256,16 @@ include_once(__DIR__.'/inc/header.php');
         echo '<hr>
         <div class="flex">
 
-          <div class="info">
-            '.$result['modele'].'
-          </div>
+          <div class="info">';
+
+            if (isset($result['modele'])) {
+              echo $result['modele'];
+            }
+            else {
+              echo 'NULL';
+            }
+
+          echo '</div>
 
           <div class="info">
             '.$result['prenom'].'
@@ -269,9 +282,14 @@ include_once(__DIR__.'/inc/header.php');
       <p>Afficher les conducteurs et tous les vehicules (meme ceux qui n'ont pas de correspondance) :</p>
 
       <?php
-      $query = $db->query('SELECT * FROM (association_vehicule_conducteur
-      INNER JOIN conducteur ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur)
-      INNER JOIN vehicule ON association_vehicule_conducteur.id_vehicule = vehicule.id_vehicule');
+      // $query = $db->query('SELECT * FROM (association_vehicule_conducteur
+      // INNER JOIN conducteur ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur)
+      // INNER JOIN vehicule ON association_vehicule_conducteur.id_vehicule = vehicule.id_vehicule');
+
+      $query = $db->query('SELECT C.*, V.* from vehicule as V LEFT JOIN association_vehicule_conducteur as A ON A.id_vehicule = V.id_vehicule LEFT JOIN conducteur as C ON C.id_conducteur = A.id_conducteur');
+
+
+      
       $results = $query->fetchAll();
 
       echo '<hr>
@@ -296,9 +314,16 @@ include_once(__DIR__.'/inc/header.php');
             '.$result['modele'].'
           </div>
 
-          <div class="info">
-            '.$result['prenom'].'
-          </div>
+          <div class="info">';
+
+          if (isset($result['prenom'])) {
+            echo $result['prenom'];
+          }
+          else {
+            echo 'NULL';
+          }
+
+        echo '</div>
 
         </div>';
       }
@@ -311,9 +336,16 @@ include_once(__DIR__.'/inc/header.php');
       <p>Afficher tous les conducteurs et tous les vehicules, peu importe les correspondances :</p>
 
       <?php
-      $query = $db->query('SELECT * FROM (association_vehicule_conducteur
-      INNER JOIN conducteur ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur)
-      INNER JOIN vehicule ON association_vehicule_conducteur.id_vehicule = vehicule.id_vehicule');
+      // $query = $db->query('SELECT * FROM (association_vehicule_conducteur
+      // INNER JOIN conducteur ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur)
+      // INNER JOIN vehicule ON association_vehicule_conducteur.id_vehicule = vehicule.id_vehicule');
+
+      $query = $db->query('SELECT V.modele, C.prenom from conducteur as C LEFT JOIN association_vehicule_conducteur AS A ON C.id_conducteur = A.id_conducteur LEFT JOIN vehicule AS V ON V.id_vehicule = A.id_vehicule
+      UNION
+      SELECT V.modele, C.prenom from vehicule as V LEFT JOIN association_vehicule_conducteur AS A ON V.id_vehicule = A.id_vehicule LEFT JOIN conducteur AS C ON C.id_conducteur = A.id_conducteur');
+
+
+
       $results = $query->fetchAll();
 
       echo '<hr>
@@ -334,13 +366,27 @@ include_once(__DIR__.'/inc/header.php');
         echo '<hr>
         <div class="flex">
 
-          <div class="info">
-            '.$result['modele'].'
-          </div>
+          <div class="info">';
 
-          <div class="info">
-            '.$result['prenom'].'
-          </div>
+          if (isset($result['modele'])) {
+            echo $result['modele'];
+          }
+          else {
+            echo 'NULL';
+          }
+
+        echo '</div>
+
+          <div class="info">';
+
+          if (isset($result['prenom'])) {
+            echo $result['prenom'];
+          }
+          else {
+            echo 'NULL';
+          }
+
+        echo '</div>
 
         </div>';
       }
