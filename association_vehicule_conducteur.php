@@ -224,31 +224,25 @@ include_once(__DIR__.'/inc/header.php');
         if ($id_vehicule == 0) $erreur .= '<h2>Mettez un id_vehicule correct !</h2>';
         if (strlen($erreur) > 0) exit($erreur);
 
+        // ----- Modif (Association) dans la BDD sans requete preparée ----
 
+        // $query = $db->query("INSERT INTO `association_vehicule_conducteur` (`id_vehicule`, `id_conducteur`) VALUES ($id_vehicule, $id_conducteur);");
+        
         // ----- Modif (Association) dans la BDD avec requete preparée ----
-        /*
-        $query = $db->prepare('UPDATE `association_vehicule_conducteur` SET `id_conducteur` = :id_conducteur WHERE `association_vehicule_conducteur`.`id_association` = :id_association');
+    
+        $query = $db->prepare("INSERT INTO `association_vehicule_conducteur` (`id_vehicule`, `id_conducteur`) VALUES (:id_vehicule, :id_conducteur);");
         
         $query->bindValue(':id_conducteur', $id_conducteur, PDO::PARAM_INT);
         $query->bindValue(':id_vehicule', $id_vehicule, PDO::PARAM_INT);
-        */
-
-        // ----- Modif (Association) dans la BDD sans requete preparée ----
-
-        // Ajouter association :
-        $query = $db->query("INSERT INTO `association_vehicule_conducteur` (`id_vehicule`, `id_conducteur`) VALUES ($id_vehicule, $id_conducteur);");
-
-        // Mettre à jour association :
-        // $query = $db->query("UPDATE `association_vehicule_conducteur` SET `id_conducteur` = `id_conducteur` WHERE `association_vehicule_conducteur`.`id_association` = `id_association`");
-
+      
         if ($query->execute()) {
 
           echo '<h2>Mis à jour !</h2>';
-          // echo '<script>
-          //       setTimeout(function(){
-          //         window.location = "association_vehicule_conducteur.php";
-          //       }, 3000);
-          //       </script>';
+          echo '<script>
+                setTimeout(function(){
+                  window.location = "association_vehicule_conducteur.php";
+                }, 3000);
+                </script>';
 
         }
 
