@@ -32,8 +32,8 @@ include_once(__DIR__.'/inc/header.php');
     echo $result['COUNT(*)'];
     ?>
 
-    <hr class="separate"> <!-- ============================================================================= -->
 
+    <hr class="separate"> <!-- ============================================================================= -->
 
 
     <p>Afficher les vehicules n’ayant pas de conducteur :</p>
@@ -46,59 +46,26 @@ include_once(__DIR__.'/inc/header.php');
 
     echo '<hr>
     <div class="flex">
-
-        <div class="info b">
-            id_vehicule
-        </div>
-
-        <div class="info b">
-            marque
-        </div>
-
-        <div class="info b">
-            modele
-        </div>
-
-        <div class="info b">
-            couleur
-        </div>
-
-        <div class="info b">
-            immatriculation
-        </div>
-
+        <div class="info b">id_vehicule</div>
+        <div class="info b">marque</div>
+        <div class="info b">modele</div>
+        <div class="info b">couleur</div>
+        <div class="info b">immatriculation</div>
     </div>';
 
     foreach ($results as $result) {
         echo '<hr>
         <div class="flex">
-
-            <div class="info">
-                '.$result['id_vehicule'].'
-            </div>
-
-            <div class="info">
-                '.$result['marque'].'
-            </div>
-
-            <div class="info">
-                '.$result['modele'].'
-            </div>
-
-            <div class="info">
-                '.$result['couleur'].'
-            </div>
-
-            <div class="info">
-                '.$result['immatriculation'].'
-            </div>
-
+            <div class="info">'.$result['id_vehicule'].'</div>
+            <div class="info">'.$result['marque'].'</div>
+            <div class="info">'.$result['modele'].'</div>
+            <div class="info">'.$result['couleur'].'</div>
+            <div class="info">'.$result['immatriculation'].'</div>
         </div>';
     }
     ?>
 
-    
-    
+
     <hr class="separate"> <!-- ============================================================================= -->
 
 
@@ -112,43 +79,23 @@ include_once(__DIR__.'/inc/header.php');
 
     echo '<hr>
     <div class="flex">
-
-        <div class="info b">
-            id_conducteur
-        </div>
-
-        <div class="info b">
-            prenom
-        </div>
-
-        <div class="info b">
-            nom
-        </div>
-
+        <div class="info b">id_conducteur</div>
+        <div class="info b">prenom</div>
+        <div class="info b">nom</div>
     </div>';
 
     foreach ($results as $result) {
         echo '<hr>
         <div class="flex">
-
-            <div class="info">
-                '.$result['id_conducteur'].'
-            </div>
-
-            <div class="info">
-                '.$result['prenom'].'
-            </div>
-
-            <div class="info">
-                '.$result['nom'].'
-            </div>
-
+            <div class="info">'.$result['id_conducteur'].'</div>
+            <div class="info">'.$result['prenom'].'</div>
+            <div class="info">'.$result['nom'].'</div>
         </div>';
     }
     ?>
 
-    <hr class="separate"> <!-- ============================================================================= -->
 
+    <hr class="separate"> <!-- ============================================================================= -->
 
 
     <p>Afficher les vehicules conduit par Philippe Pandre :</p>
@@ -160,64 +107,29 @@ include_once(__DIR__.'/inc/header.php');
 
     echo '<hr>
     <div class="flex">
-
-        <div class="info b">
-            id_vehicule
-        </div>
-
-        <div class="info b">
-            marque
-        </div>
-
-        <div class="info b">
-            modele
-        </div>
-
-        <div class="info b">
-            couleur
-        </div>
-
-        <div class="info b">
-            immatriculation
-        </div>
-
+        <div class="info b">id_vehicule</div>
+        <div class="info b">marque</div>
+        <div class="info b">modele</div>
+        <div class="info b">couleur</div>
+        <div class="info b">immatriculation</div>
     </div>';
 
     foreach ($results as $result) {
         if (($result['prenom'] == 'Philippe') and ($result['nom'] == 'Pandre')) {
             echo '<hr>
             <div class="flex">
-
-                <div class="info">
-                    '.$result['id_vehicule'].'
-                </div>
-
-                <div class="info">
-                    '.$result['marque'].'
-                </div>
-
-                <div class="info">
-                    '.$result['modele'].'
-                </div>
-
-                <div class="info">
-                    '.$result['couleur'].'
-                </div>
-
-                <div class="info">
-                    '.$result['immatriculation'].'
-                </div>
-
+                <div class="info">'.$result['id_vehicule'].'</div>
+                <div class="info">'.$result['marque'].'</div>
+                <div class="info">'.$result['modele'].'</div>
+                <div class="info">'.$result['couleur'].'</div>
+                <div class="info">'.$result['immatriculation'].'</div>
             </div>';
         }
-
     }
     ?>
 
 
     <hr class="separate"> <!-- ============================================================================= -->
-
-
 
 
     <p>Afficher tous les conducteurs (meme ceux qui n'ont pas de correspondance) ainsi que les vehicules :</p>
@@ -225,9 +137,9 @@ include_once(__DIR__.'/inc/header.php');
     <?php
     // $query = $db->query('SELECT * FROM (association_vehicule_conducteur 
     // RIGHT OUTER JOIN conducteur ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur)
-    // INNER JOIN vehicule ON vehicule.id_vehicule = association_vehicule_conducteur.id_vehicule');
+    // INNER JOIN vehicule ON vehicule.id_vehicule = association_vehicule_conducteur.id_vehicule'); // Faux
 
-    // $query = $db->query('SELECT * FROM (association_vehicule_conducteur RIGHT OUTER JOIN conducteur ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur)');
+    // $query = $db->query('SELECT * FROM (association_vehicule_conducteur RIGHT OUTER JOIN conducteur ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur)'); // Faux
 
     $query = $db->query('SELECT C.*, V.* from conducteur as c LEFT JOIN association_vehicule_conducteur as A ON A.id_conducteur = c.id_conducteur LEFT JOIN vehicule as V ON V.id_vehicule = A.id_vehicule');
 
@@ -235,42 +147,29 @@ include_once(__DIR__.'/inc/header.php');
     
     echo '<hr>
     <div class="flex">
-
-        <div class="info b">
-            modele
-        </div>
-
-        <div class="info b">
-            prenom
-        </div>
-
+        <div class="info b">modele</div>
+        <div class="info b">prenom</div>
     </div>';
 
     foreach ($results as $result) {
         echo '<hr>
         <div class="flex">
-
             <div class="info">';
-
                 if (isset($result['modele'])) {
                     echo $result['modele'];
                 }
                 else {
                     echo 'NULL';
                 }
-
-            echo '</div>
-
-            <div class="info">
-                '.$result['prenom'].'
+            echo '
             </div>
-
+            <div class="info">'.$result['prenom'].'</div>
         </div>';
     }
     ?>
 
-    <hr class="separate"> <!-- ============================================================================= -->
 
+    <hr class="separate"> <!-- ============================================================================= -->
 
 
     <p>Afficher les conducteurs et tous les vehicules (meme ceux qui n'ont pas de correspondance) :</p>
@@ -278,52 +177,37 @@ include_once(__DIR__.'/inc/header.php');
     <?php
     // $query = $db->query('SELECT * FROM (association_vehicule_conducteur
     // INNER JOIN conducteur ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur)
-    // INNER JOIN vehicule ON association_vehicule_conducteur.id_vehicule = vehicule.id_vehicule');
+    // INNER JOIN vehicule ON association_vehicule_conducteur.id_vehicule = vehicule.id_vehicule'); // Faux
 
     $query = $db->query('SELECT C.*, V.* from vehicule as V LEFT JOIN association_vehicule_conducteur as A ON A.id_vehicule = V.id_vehicule LEFT JOIN conducteur as C ON C.id_conducteur = A.id_conducteur');
-
-
     
     $results = $query->fetchAll();
 
     echo '<hr>
     <div class="flex">
-
-        <div class="info b">
-            modele
-        </div>
-
-        <div class="info b">
-            prenom
-        </div>
-
+        <div class="info b">modele</div>
+        <div class="info b">prenom</div>
     </div>';
 
     foreach ($results as $result) {
         echo '<hr>
         <div class="flex">
-
-            <div class="info">
-                '.$result['modele'].'
-            </div>
-
+            <div class="info">'.$result['modele'].'</div>
             <div class="info">';
-
-            if (isset($result['prenom'])) {
-                echo $result['prenom'];
-            }
-            else {
-                echo 'NULL';
-            }
-
-        echo '</div>
-
+                if (isset($result['prenom'])) {
+                    echo $result['prenom'];
+                }
+                else {
+                    echo 'NULL';
+                }
+            echo '
+            </div>
         </div>';
     }
     ?>
 
-    <hr class="separate"> <!-- ============================================================================= -->
 
+    <hr class="separate"> <!-- ============================================================================= -->
 
 
     <p>Afficher tous les conducteurs et tous les vehicules, peu importe les correspondances :</p>
@@ -331,55 +215,41 @@ include_once(__DIR__.'/inc/header.php');
     <?php
     // $query = $db->query('SELECT * FROM (association_vehicule_conducteur
     // INNER JOIN conducteur ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur)
-    // INNER JOIN vehicule ON association_vehicule_conducteur.id_vehicule = vehicule.id_vehicule');
+    // INNER JOIN vehicule ON association_vehicule_conducteur.id_vehicule = vehicule.id_vehicule'); // Faux
 
     $query = $db->query('SELECT V.modele, C.prenom from conducteur as C LEFT JOIN association_vehicule_conducteur AS A ON C.id_conducteur = A.id_conducteur LEFT JOIN vehicule AS V ON V.id_vehicule = A.id_vehicule
     UNION
     SELECT V.modele, C.prenom from vehicule as V LEFT JOIN association_vehicule_conducteur AS A ON V.id_vehicule = A.id_vehicule LEFT JOIN conducteur AS C ON C.id_conducteur = A.id_conducteur');
 
-
-
     $results = $query->fetchAll();
 
     echo '<hr>
     <div class="flex">
-
-        <div class="info b">
-            modele
-        </div>
-
-        <div class="info b">
-            prenom
-        </div>
-
+        <div class="info b">modele</div>
+        <div class="info b">prenom</div>
     </div>';
 
     foreach ($results as $result) {
         echo '<hr>
         <div class="flex">
-
             <div class="info">';
-
-            if (isset($result['modele'])) {
-                echo $result['modele'];
-            }
-            else {
-                echo 'NULL';
-            }
-
-        echo '</div>
-
+                if (isset($result['modele'])) {
+                    echo $result['modele'];
+                }
+                else {
+                    echo 'NULL';
+                }
+            echo '
+            </div>
             <div class="info">';
-
-            if (isset($result['prenom'])) {
-                echo $result['prenom'];
-            }
-            else {
-                echo 'NULL';
-            }
-
-        echo '</div>
-
+                if (isset($result['prenom'])) {
+                    echo $result['prenom'];
+                }
+                else {
+                    echo 'NULL';
+                }
+            echo '
+            </div>
         </div>';
     }
     ?>
