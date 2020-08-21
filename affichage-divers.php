@@ -39,9 +39,16 @@ include_once(__DIR__.'/inc/header.php');
     <p>Afficher les vehicules n’ayant pas de conducteur :</p>
 
     <?php
-    $query = $db->query('SELECT ass.*, veh.* FROM (vtc.association_vehicule_conducteur ass 
-    RIGHT OUTER JOIN vtc.vehicule veh ON ass.id_vehicule = veh.id_vehicule)
-    WHERE ass.id_association IS NULL');
+    $query = $db->query('SELECT * FROM association_vehicule_conducteur 
+    RIGHT JOIN vehicule
+    ON association_vehicule_conducteur.id_vehicule = vehicule.id_vehicule
+    WHERE id_association IS NULL');
+
+    // $query = $db->query('SELECT * FROM association_vehicule_conducteur AS ass 
+    // RIGHT JOIN vehicule AS veh 
+    // ON ass.id_vehicule = veh.id_vehicule
+    // WHERE id_association IS NULL'); // Avec alias
+
     $results = $query->fetchAll();
 
     echo '<hr>
@@ -72,9 +79,16 @@ include_once(__DIR__.'/inc/header.php');
     <p>Afficher les conducteurs n’ayant pas de vehicule :</p>
 
     <?php
-    $query = $db->query('SELECT ass.*, con.* FROM (association_vehicule_conducteur ass 
-    RIGHT OUTER JOIN conducteur con ON ass.id_conducteur = con.id_conducteur)
-    WHERE ass.id_association IS NULL');
+    $query = $db->query('SELECT * FROM association_vehicule_conducteur
+    RIGHT JOIN conducteur
+    ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur
+    WHERE id_association IS NULL');
+
+    // $query = $db->query('SELECT * FROM association_vehicule_conducteur AS ass 
+    // RIGHT JOIN conducteur AS con 
+    // ON ass.id_conducteur = con.id_conducteur
+    // WHERE id_association IS NULL'); // Avec alias
+
     $results = $query->fetchAll();
 
     echo '<hr>
@@ -100,9 +114,14 @@ include_once(__DIR__.'/inc/header.php');
 
     <p>Afficher les vehicules conduit par Philippe Pandre :</p>
     <?php
-    $query = $db->query('SELECT * FROM (association_vehicule_conducteur
-    INNER JOIN conducteur ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur)
-    INNER JOIN vehicule ON association_vehicule_conducteur.id_vehicule = vehicule.id_vehicule');
+    $query = $db->query('SELECT * FROM association_vehicule_conducteur
+
+    INNER JOIN conducteur 
+    ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur
+    
+    INNER JOIN vehicule 
+    ON association_vehicule_conducteur.id_vehicule = vehicule.id_vehicule');
+
     $results = $query->fetchAll();
 
     echo '<hr>
@@ -135,13 +154,27 @@ include_once(__DIR__.'/inc/header.php');
     <p>Afficher tous les conducteurs (meme ceux qui n'ont pas de correspondance) ainsi que les vehicules :</p>
 
     <?php
-    // $query = $db->query('SELECT * FROM (association_vehicule_conducteur 
-    // RIGHT OUTER JOIN conducteur ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur)
-    // INNER JOIN vehicule ON vehicule.id_vehicule = association_vehicule_conducteur.id_vehicule'); // Faux
+    // Je n'avais pas trouvé, car j'avais fait : SELECT * FROM association_vehicule_conducteur 
 
-    // $query = $db->query('SELECT * FROM (association_vehicule_conducteur RIGHT OUTER JOIN conducteur ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur)'); // Faux
+    $query = $db->query('SELECT * from conducteur
 
-    $query = $db->query('SELECT C.*, V.* from conducteur as c LEFT JOIN association_vehicule_conducteur as A ON A.id_conducteur = c.id_conducteur LEFT JOIN vehicule as V ON V.id_vehicule = A.id_vehicule');
+    LEFT JOIN association_vehicule_conducteur
+    ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur 
+    
+    LEFT JOIN vehicule 
+    ON vehicule.id_vehicule = association_vehicule_conducteur.id_vehicule');
+
+    // $query = $db->query('SELECT vehicule.modele, conducteur.prenom from conducteur
+    // LEFT JOIN association_vehicule_conducteur
+    // ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur 
+    // LEFT JOIN vehicule 
+    // ON vehicule.id_vehicule = association_vehicule_conducteur.id_vehicule'); // Si on veut n'afficher que les colonnes modele et prenom dans la requête sql
+
+    // $query = $db->query('SELECT V.modele, C.prenom from conducteur AS c 
+    // LEFT JOIN association_vehicule_conducteur AS A 
+    // ON A.id_conducteur = c.id_conducteur 
+    // LEFT JOIN vehicule AS V 
+    // ON V.id_vehicule = A.id_vehicule'); // Avec Alias
 
     $results = $query->fetchAll();
     
@@ -175,11 +208,31 @@ include_once(__DIR__.'/inc/header.php');
     <p>Afficher les conducteurs et tous les vehicules (meme ceux qui n'ont pas de correspondance) :</p>
 
     <?php
-    // $query = $db->query('SELECT * FROM (association_vehicule_conducteur
-    // INNER JOIN conducteur ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur)
-    // INNER JOIN vehicule ON association_vehicule_conducteur.id_vehicule = vehicule.id_vehicule'); // Faux
+    // $query = $db->query('SELECT * from conducteur
+    // LEFT JOIN association_vehicule_conducteur
+    // ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur
+    // RIGHT JOIN vehicule
+    // ON vehicule.id_vehicule = association_vehicule_conducteur.id_vehicule'); // Marche aussi, mais n'affiche pas dans le même ordre
 
-    $query = $db->query('SELECT C.*, V.* from vehicule as V LEFT JOIN association_vehicule_conducteur as A ON A.id_vehicule = V.id_vehicule LEFT JOIN conducteur as C ON C.id_conducteur = A.id_conducteur');
+    $query = $db->query('SELECT * from vehicule
+
+    LEFT JOIN association_vehicule_conducteur
+    ON association_vehicule_conducteur.id_vehicule = vehicule.id_vehicule 
+        
+    LEFT JOIN conducteur
+    ON conducteur.id_conducteur = association_vehicule_conducteur.id_conducteur');
+
+    // $query = $db->query('SELECT vehicule.modele, conducteur.prenom from vehicule
+    // LEFT JOIN association_vehicule_conducteur
+    // ON association_vehicule_conducteur.id_vehicule = vehicule.id_vehicule 
+    // LEFT JOIN conducteur
+    // ON conducteur.id_conducteur = association_vehicule_conducteur.id_conducteur'); // Si on veut n'afficher que les colonnes modele et prenom dans la requête sql
+
+    // $query = $db->query('SELECT V.modele, C.prenom from vehicule AS V 
+    // LEFT JOIN association_vehicule_conducteur AS A 
+    // ON A.id_vehicule = V.id_vehicule 
+    // LEFT JOIN conducteur AS C 
+    // ON C.id_conducteur = A.id_conducteur'); // Avec alias
     
     $results = $query->fetchAll();
 
@@ -213,13 +266,37 @@ include_once(__DIR__.'/inc/header.php');
     <p>Afficher tous les conducteurs et tous les vehicules, peu importe les correspondances :</p>
 
     <?php
-    // $query = $db->query('SELECT * FROM (association_vehicule_conducteur
-    // INNER JOIN conducteur ON association_vehicule_conducteur.id_conducteur = conducteur.id_conducteur)
-    // INNER JOIN vehicule ON association_vehicule_conducteur.id_vehicule = vehicule.id_vehicule'); // Faux
+    // Pas trouvé
 
-    $query = $db->query('SELECT V.modele, C.prenom from conducteur as C LEFT JOIN association_vehicule_conducteur AS A ON C.id_conducteur = A.id_conducteur LEFT JOIN vehicule AS V ON V.id_vehicule = A.id_vehicule
+    $query = $db->query('SELECT vehicule.modele, conducteur.prenom from conducteur
+
+    LEFT JOIN association_vehicule_conducteur
+    ON conducteur.id_conducteur = association_vehicule_conducteur.id_conducteur 
+    
+    LEFT JOIN vehicule
+    ON vehicule.id_vehicule = association_vehicule_conducteur.id_vehicule
+    
     UNION
-    SELECT V.modele, C.prenom from vehicule as V LEFT JOIN association_vehicule_conducteur AS A ON V.id_vehicule = A.id_vehicule LEFT JOIN conducteur AS C ON C.id_conducteur = A.id_conducteur');
+    
+    SELECT vehicule.modele, conducteur.prenom from vehicule
+        
+    LEFT JOIN association_vehicule_conducteur
+    ON vehicule.id_vehicule = association_vehicule_conducteur.id_vehicule 
+        
+    LEFT JOIN conducteur
+    ON conducteur.id_conducteur = association_vehicule_conducteur.id_conducteur');
+
+    // $query = $db->query('SELECT V.modele, C.prenom from conducteur as C 
+    // LEFT JOIN association_vehicule_conducteur AS A 
+    // ON C.id_conducteur = A.id_conducteur 
+    // LEFT JOIN vehicule AS V 
+    // ON V.id_vehicule = A.id_vehicule
+    // UNION
+    // SELECT V.modele, C.prenom from vehicule as V 
+    // LEFT JOIN association_vehicule_conducteur AS A 
+    // ON V.id_vehicule = A.id_vehicule 
+    // LEFT JOIN conducteur AS C 
+    // ON C.id_conducteur = A.id_conducteur'); // Avec alias
 
     $results = $query->fetchAll();
 
